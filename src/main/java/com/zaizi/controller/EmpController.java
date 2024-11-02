@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,20 @@ public class EmpController {
             return ResponseEntity.badRequest().body(Map.of("error:","error"+e.getMessage()));
         }
     }
+    // 条件查询员工
+    @GetMapping("/api/emp/search")
+    public ResponseEntity<?> getEmp(@RequestParam(value = "empname",required = false) String name,
+                                    @RequestParam(value = "gender",required = false) String gender,
+                                    @RequestParam(value = "start",required = false) LocalDate entryDate) {
+        log.info("查询员工,姓名:{},性别:{},入职日期:{}",name,gender,entryDate);
+        try {
+            List<Emp> empList = empService.getEmp(name,gender,entryDate);
+            return ResponseEntity.ok(Map.of("empList",empList));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error","error:"+e.getMessage()));
+        }
+    }
+
 }
 
 
