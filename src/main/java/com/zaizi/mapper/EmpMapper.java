@@ -25,4 +25,5 @@ public interface EmpMapper {
     Emp getEmpById(Integer id);
     // 编辑员工
     void updateEmp(Emp emp);
+
 }

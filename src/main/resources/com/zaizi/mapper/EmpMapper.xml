@@ -18,6 +18,7 @@
     </update>
 
 
+
     <select id="getEmp" resultType="com.zaizi.pojo.Emp">
         select id, name, image, gender, position, entry_date, last_operation_time, actions
         from emp
