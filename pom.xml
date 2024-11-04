@@ -23,6 +23,12 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.2.2</version>
         </dependency>
+<!--        时间依赖Java8-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.13.3</version>
+        </dependency>
 
         <dependency>
             <groupId>com.mysql</groupId>

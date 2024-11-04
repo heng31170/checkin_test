@@ -20,4 +20,9 @@ public interface EmpMapper {
     void delEmp(Integer id);
     // 条件查询员工
     List<Emp> getEmp(@Param("name") String name,@Param("gender") String gender,@Param("entry_date") LocalDate entryDate);
+    // 根据id查询员工
+    @Select("select * from emp where id = #{id}")
+    Emp getEmpById(Integer id);
+    // 编辑员工
+    void updateEmp(Emp emp);
 }

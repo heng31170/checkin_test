@@ -11,6 +11,16 @@ spring:
       max-file-size: 10MB
       max-request-size: 100MB
 
+
+  #获取静态文件
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - classpath:/templates/
+        - classpath:/public/
+
+
 # 输出日志  驼峰命名
 mybatis:
   configuration:

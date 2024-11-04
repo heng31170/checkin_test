@@ -4,6 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zaizi.mapper.EmpMapper">
 
+    <update id="updateEmp">
+        update emp
+            <set>
+                <if test="name != null">name = #{name},</if>
+                <if test="image != null">image = #{image},</if>
+                <if test="gender != null">gender = #{gender},</if>
+                <if test="position != null">position = #{position},</if>
+                <if test="entryDate != null">entry_date = #{entryDate},</if>
+                last_operation_time = NOW()
+            </set>
+        where id = #{id}
+    </update>
+
 
     <select id="getEmp" resultType="com.zaizi.pojo.Emp">
         select id, name, image, gender, position, entry_date, last_operation_time, actions

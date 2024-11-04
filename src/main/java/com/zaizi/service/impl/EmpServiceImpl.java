@@ -27,8 +27,20 @@ public class EmpServiceImpl implements EmpService {
         empMapper.delEmp(id);
     }
 
+    // 条件查询员工
     @Override
     public List<Emp> getEmp(String name, String gender, LocalDate entryDate) {
         return empMapper.getEmp(name,gender,entryDate);
     }
+    // 根据id查询员工
+    @Override
+    public Emp getEmpById(Integer id) {
+        return empMapper.getEmpById(id);
+    }
+
+    @Override
+    public void updateEmp(Emp emp) {
+        empMapper.updateEmp(emp);
+    }
+
 }
