@@ -77,24 +77,35 @@ public class EmpController {
             Emp emp = objectMapper.readValue(json, Emp.class);
 
             // 如果文件不为空，处理文件上传
-            String url = "";
             if (file != null && !file.isEmpty()) {
                 log.info("接收到文件:{}",file.getOriginalFilename());
                 String fileUrl = uploadFile(file,emp); // 上传文件并获取 URL
-                url = fileUrl;
                 emp.setImage(fileUrl); // 设置员工头像 URL
             } else {
                 log.warn("没有接受到文件");
             }
 
             empService.updateEmp(emp); // 更新员工信息
-            return ResponseEntity.ok(Map.of("fileUrl",url));
+            return ResponseEntity.ok("success to update emp");
         } catch (Exception e) {
             log.error("更新员工信息失败: {}", e.getMessage());
             return ResponseEntity.status(500).body("更新员工信息失败: " + e.getMessage());
         }
     }
+    // 新增员工
+    @PostMapping("/api/emp/add")
+    public ResponseEntity<?> addEmpAndCheck(@RequestBody Emp emp) {
+        log.info("新增员工操作,员工:{}",emp);
+        try {
+            empService.addEmpAndCheckin(emp);
+            return ResponseEntity.ok("success to add emp");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("员工添加失败:",e.getMessage()));
+        }
+    }
 
+
+    // 文件上传
     private String uploadFile(MultipartFile file,Emp emp) throws Exception {
 
         // 文件上传逻辑

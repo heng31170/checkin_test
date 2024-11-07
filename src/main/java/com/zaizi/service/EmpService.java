@@ -1,5 +1,6 @@
 package com.zaizi.service;
 
+import com.zaizi.pojo.Checkin;
 import com.zaizi.pojo.Emp;
 
 import java.time.LocalDate;
@@ -16,5 +17,6 @@ public interface EmpService {
     Emp getEmpById(Integer id);
     // 编辑员工
     void updateEmp(Emp emp);
-
+    // 增加员工
+    void addEmpAndCheckin(Emp emp);
 }

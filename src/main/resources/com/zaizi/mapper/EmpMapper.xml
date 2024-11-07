@@ -13,10 +13,16 @@
                 <if test="position != null">position = #{position},</if>
                 <if test="entryDate != null">entry_date = #{entryDate},</if>
                 last_operation_time = NOW()
+                where id = #{id}
             </set>
-        where id = #{id}
     </update>
-
+    <update id="updateCheckin">
+        update daily_checkin
+            <set>
+                <if test="empName != null">emp_name = #{empName}</if>
+            </set>
+            where emp_id = #{empId}
+    </update>
 
 
     <select id="getEmp" resultType="com.zaizi.pojo.Emp">
@@ -25,7 +31,7 @@
         <where>
             <if test="name != null and name != ''">name like concat('%',#{name},'%')</if>
             <if test="gender != null and gender != ''">and gender = #{gender}</if>
-            <if test="entry_date != null">and entry_date between #{entryDate} and curdate()</if>
+            <if test="entry_date != null">and entry_date >= #{entryDate} </if>
         </where>
     </select>
 </mapper>
