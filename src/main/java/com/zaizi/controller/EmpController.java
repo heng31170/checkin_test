@@ -1,11 +1,14 @@
 package com.zaizi.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaizi.pojo.Emp;
 import com.zaizi.service.EmpService;
+import com.zaizi.service.PlusEmpServe;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +29,9 @@ public class EmpController {
     @Autowired
     private EmpService empService;
 
+    @Autowired
+    private PlusEmpServe plusEmpServe;
+
     // 获取所有员工
     @GetMapping("/api/emp")
     public ResponseEntity<?> getAllEmp() {
@@ -33,6 +39,16 @@ public class EmpController {
         List<Emp> empList = empService.getAllEmp();
         return ResponseEntity.ok(Map.of("empList",empList));
     }
+    // 获取分页查询员工
+    @GetMapping("/api/emp/page")
+    public Page<Emp> getEmpByPage(@RequestParam(value = "current",defaultValue = "1") int current,
+                                  @RequestParam(value = "size",defaultValue = "5") int size) {
+        log.info("分页查询员工,当前页:{},尺寸:{}",current,size);
+        Page<Emp> page = plusEmpServe.getEmpPage(current,size);
+        log.info("返回数据:{}",page);
+        return page;
+    }
+
     // 根据id删除员工
     @PostMapping("/api/emp/delete")
     public ResponseEntity<?> delEmp(@RequestParam("id") Integer id) {
@@ -47,12 +63,14 @@ public class EmpController {
     }
     // 条件查询员工
     @GetMapping("/api/emp/search")
-    public ResponseEntity<?> getEmp(@RequestParam(value = "empname",required = false) String name,
+    public ResponseEntity<?> getEmp(@RequestParam(value = "name",required = false) String name,
                                     @RequestParam(value = "gender",required = false) String gender,
-                                    @RequestParam(value = "start",required = false) LocalDate entryDate) {
-        log.info("查询员工,姓名:{},性别:{},入职日期:{}",name,gender,entryDate);
+                                    @RequestParam(value = "entryDate",required = false)
+                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate entryDate,
+                                    @RequestParam(value = "position") String position) {
+        log.info("查询员工,姓名:{},职位:{},性别:{},入职日期:{}",name,position,gender,entryDate);
         try {
-            List<Emp> empList = empService.getEmp(name,gender,entryDate);
+            List<Emp> empList = empService.getEmp(name,gender,entryDate,position);
             return ResponseEntity.ok(Map.of("empList",empList));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error","error:"+e.getMessage()));

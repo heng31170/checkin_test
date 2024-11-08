@@ -34,8 +34,8 @@ public class EmpServiceImpl implements EmpService {
     // 条件查询员工
 
     @Override
-    public List<Emp> getEmp(String name, String gender, LocalDate entryDate) {
-        return empMapper.getEmp(name,gender,entryDate);
+    public List<Emp> getEmp(String name, String gender, LocalDate entryDate, String position) {
+        return empMapper.getEmp(name,gender,entryDate,position);
     }
     // 根据id查询员工
     @Override

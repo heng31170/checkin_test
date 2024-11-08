@@ -31,7 +31,8 @@
         <where>
             <if test="name != null and name != ''">name like concat('%',#{name},'%')</if>
             <if test="gender != null and gender != ''">and gender = #{gender}</if>
-            <if test="entry_date != null">and entry_date >= #{entryDate} </if>
+            <if test="entryDate != null">and entry_date >= #{entryDate} </if>
+            <if test="position != null and position != ''">and position like concat('%',#{position},'%')</if>
         </where>
     </select>
 </mapper>

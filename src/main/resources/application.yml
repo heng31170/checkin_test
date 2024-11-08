@@ -35,3 +35,15 @@ logging:
 
 server:
   port: 5678
+
+# 配置PageHelper
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# mybatis_plus配置
+mybatis-plus:
+  mapper-locations: classpath:/mappers/**/*xml
+  type-aliases-package: com.zaizi.pojo

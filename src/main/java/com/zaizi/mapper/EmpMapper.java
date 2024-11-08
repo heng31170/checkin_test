@@ -20,7 +20,7 @@ public interface EmpMapper {
     @Delete("delete from daily_checkin where emp_id = #{empId}")
     void delCheckin(Integer empId);
     // 条件查询员工
-    List<Emp> getEmp(@Param("name") String name,@Param("gender") String gender,@Param("entry_date") LocalDate entryDate);
+    List<Emp> getEmp(@Param("name") String name,@Param("gender") String gender,@Param("entryDate") LocalDate entryDate,@Param("position") String position);
     // 根据id查询员工
     @Select("select * from emp where id = #{id}")
     Emp getEmpById(Integer id);
