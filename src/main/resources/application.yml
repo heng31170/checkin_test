@@ -47,3 +47,8 @@ pagehelper:
 mybatis-plus:
   mapper-locations: classpath:/mappers/**/*xml
   type-aliases-package: com.zaizi.pojo
+
+# 文件上传地址
+file:
+  upload-dir: D:/Javaidea/springboot_learn/checkin_test/src/main/resources/static/
+  serve-dir: http://127.0.0.1:5678/

@@ -30,5 +30,8 @@ public class Emp {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     LocalDateTime lastOperationTime;
-    String actions;
+
+    String account;
+    String passwd;
+    Boolean isManager;
 }

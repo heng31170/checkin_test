@@ -55,6 +55,8 @@ public class EmpServiceImpl implements EmpService {
     @Transactional
     @Override
     public void addEmpAndCheckin(Emp emp) {
+        if(emp.getPasswd() == null) emp.setPasswd("123456");
+        if(emp.getIsManager() == null) emp.setIsManager(false);
         empMapper.addEmp(emp);
         Integer empId = emp.getId();
 

@@ -8,7 +8,9 @@ import com.zaizi.service.EmpService;
 import com.zaizi.service.PlusEmpServe;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +34,17 @@ public class EmpController {
     @Autowired
     private PlusEmpServe plusEmpServe;
 
+    // 登录
+    @PostMapping("/api/login")
+    public ResponseEntity<?> login(@RequestBody Emp emp) {
+        log.info("登录操作,账户名:{}",emp.getAccount());
+        Emp e = plusEmpServe.login(emp.getAccount(),emp.getPasswd());
+        if(e != null) {
+            return ResponseEntity.ok("登录成功");   // 可以返回用户信息或者token等
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("登录失败，用户名或密码错误");
+    }
+
     // 获取所有员工
     @GetMapping("/api/emp")
     public ResponseEntity<?> getAllEmp() {
@@ -41,8 +54,8 @@ public class EmpController {
     }
     // 获取分页查询员工
     @GetMapping("/api/emp/page")
-    public Page<Emp> getEmpByPage(@RequestParam(value = "current",defaultValue = "1") int current,
-                                  @RequestParam(value = "size",defaultValue = "5") int size) {
+    public Page<Emp> getEmpByPage(@RequestParam(value = "current") int current,
+                                  @RequestParam(value = "size") int size) {
         log.info("分页查询员工,当前页:{},尺寸:{}",current,size);
         Page<Emp> page = plusEmpServe.getEmpPage(current,size);
         log.info("返回数据:{}",page);
@@ -84,8 +97,10 @@ public class EmpController {
         return ResponseEntity.ok(emp);
     }
     // 编辑员工
-    private static final String UPLOAD_DIR = "D:/Javaidea/springboot_learn/checkin_test/src/main/resources/static/";
-    private static final String SERVE_DIR = "http://127.0.0.1:5678/";
+    @Value("${file.upload-dir}")
+    private String UPLOAD_DIR;
+    @Value("${file.serve-dir}")
+    private String SERVE_DIR;
     @PostMapping("/api/emp/update")
     public ResponseEntity<?> updateEmp(@RequestParam(value = "file", required = false) MultipartFile file,
                                        @RequestParam("json") String json) {

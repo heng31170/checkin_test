@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface EmpMapper {
     // 获取所有员工
-    @Select("select id, name, image, gender, position, entry_date, last_operation_time, actions from emp")
+    @Select("select id, name, image, gender, position, entry_date, last_operation_time from emp")
     List<Emp> getAllEmp();
     // 删除员工
     @Delete("delete from emp where id = #{id}")
@@ -29,8 +29,8 @@ public interface EmpMapper {
     // 更新打卡名字
     void updateCheckin(@Param("empName") String empName,@Param("empId") Integer empId);
     // 新增员工&打卡
-    @Insert("insert into emp (name, gender, position, entry_date, last_operation_time)" +
-            "values (#{name}, #{gender}, #{position}, #{entryDate}, NOW())")
+    @Insert("insert into emp (account,passwd,is_manager, name, gender, position, entry_date, last_operation_time)" +
+            "values (#{account},#{passwd},#{isManager}, #{name}, #{gender}, #{position}, #{entryDate}, NOW())")
     @Options(useGeneratedKeys = true,keyProperty = "id")
     void addEmp(Emp emp);
     @Insert("insert into daily_checkin (emp_name, emp_id, check_date, is_check)\n" +
