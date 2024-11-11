@@ -26,5 +26,10 @@ public class PlusEmpServe extends ServiceImpl<PlusEmpMapper, Emp> {
         }
         return null;
     }
+    // 更新密码
+    public int updatePasswd(Emp emp) {
+        int res = plusEmpMapper.updatePasswd(emp);
+        return res;
+    }
 
 }

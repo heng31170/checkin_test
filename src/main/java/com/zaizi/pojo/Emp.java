@@ -34,4 +34,5 @@ public class Emp {
     String account;
     String passwd;
     Boolean isManager;
+    String originPasswd;
 }

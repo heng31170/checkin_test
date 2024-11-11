@@ -34,13 +34,29 @@ public class EmpController {
     @Autowired
     private PlusEmpServe plusEmpServe;
 
+    // 更新密码
+    @PostMapping("/api/passwd/update")
+    public ResponseEntity<?> updatePasswd(@RequestBody Emp emp) {
+        log.info("修改密码操作:{}",emp);
+        // 检查密码是否为空或包含空格
+        if (emp.getPasswd() == null || emp.getPasswd().trim().isEmpty() || emp.getPasswd().contains(" ")) {
+            return ResponseEntity.badRequest().body(Map.of("status", "failed", "message", "密码不能包含空格或为空"));
+        }
+        int res = plusEmpServe.updatePasswd(emp);
+        if(res != 0) {
+            return ResponseEntity.ok("success to update password");
+        } else {
+            return ResponseEntity.badRequest().body(Map.of("status","failed","message","failed to update password"));
+        }
+    }
+
     // 登录
     @PostMapping("/api/login")
     public ResponseEntity<?> login(@RequestBody Emp emp) {
         log.info("登录操作,账户名:{}",emp.getAccount());
         Emp e = plusEmpServe.login(emp.getAccount(),emp.getPasswd());
         if(e != null) {
-            return ResponseEntity.ok("登录成功");   // 可以返回用户信息或者token等
+            return ResponseEntity.ok(Map.of("status","success to login","Emp",e));   // 可以返回用户信息或者token等
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("登录失败，用户名或密码错误");
     }
