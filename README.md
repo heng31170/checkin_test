@@ -22,4 +22,21 @@ Java8不支持LocalDateTime和LocalDate，还以为是字段写错的问题来�
 现在系11.11夜10点:  
 成功获取登录账号人信息，完成了更新密码、个人中心功能，果然还是前端难点；后面康康能不能把前端的
 header提取出来，还有登出功能还是有bug，康康写个过滤器能不能修复？这几天或许有点忙，或许进度
-会慢一点点（偷懒的借口？）。mamba out...
+会慢一点点（偷懒的借口？）。mamba out...  
+现在系11.16下午六点：  
+总算是完成了拦截器（从十二号至现在），可算是完成了呜呜呜...不知道问了多少条信息，还是要感谢
+<a>https://blog.csdn.net/qq_57581439/article/details/128041253</a>的博客，主要
+问题还是那个OPTIONS请求...复盘一下修改代码前后，修改前:
+jwt=request.getHeader("Authorization");  
+修改后：  
+String jwt = "";  
+if(request.getMethod().equals("OPTIONS")) {
+response.setStatus(HttpServletResponse.SC_OK);
+return true;
+} else {  
+jwt = request.getHeader("Authorization");  
+jwt = jwt.substring(7);
+}  
+前端这边有个问题就是跨域的时候，会先传一个OPTIONS的请求，判断连接是否有效。然而实际上这个请求
+没什么用，我们设置的请求头里面根本没有。故我们在他发送OPTIONS请求时，给他过滤掉即可。同时，
+将切换页面replace替换成push并刷新页面，以修复前后回退的bug以及刷新的bug，emm差不多就这样吧。

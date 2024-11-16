@@ -13,12 +13,14 @@ public class CORSConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // 设置允许跨域请求的域名
                 .allowedOriginPatterns("*") // 允许所有域名
+                .allowedOrigins("http://localhost:8081") // 允许的前端地址
                 // 是否允许 cookie
                 .allowCredentials(true)
                 // 设置允许的请求方式
-                .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .allowedMethods("GET", "POST", "DELETE", "PUT","OPTIONS")
                 // 设置允许的 header 属性
                 .allowedHeaders("*")
+                .allowedHeaders("Authorization", "Content-Type") // 允许的请求头
                 // 跨域允许时间
                 .maxAge(3600); // 1小时
     }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaizi.pojo.Emp;
 import com.zaizi.service.EmpService;
 import com.zaizi.service.PlusEmpServe;
+import com.zaizi.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,10 +21,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @Slf4j
@@ -56,7 +55,12 @@ public class EmpController {
         log.info("登录操作,账户名:{}",emp.getAccount());
         Emp e = plusEmpServe.login(emp.getAccount(),emp.getPasswd());
         if(e != null) {
-            return ResponseEntity.ok(Map.of("status","success to login","Emp",e));   // 可以返回用户信息或者token等
+            Map<String,Object> claims = new HashMap<>();
+            claims.put("id",e.getId());
+            claims.put("name",e.getName());
+            claims.put("account",e.getAccount());
+            String jwt = JwtUtils.generateJwt(claims);
+            return ResponseEntity.ok(Map.of("status","success to login","Emp",e,"jwt",jwt));   // 可以返回用户信息或者token等
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("登录失败，用户名或密码错误");
     }
